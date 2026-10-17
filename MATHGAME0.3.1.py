@@ -334,7 +334,7 @@ def incorrectAnswer():                                                    #on in
         heart5.config(i=heartBrokeArt)
     scoreLabel.config(i=scoreResetArt, text= f"{firstNum}{selectedOp}{secondNum}={correctNum}", fg="black", font = ("Helvetica", 15),)
     if hardMode == True:
-        score=100000
+        score=0
         if incorrectAnswers>=3:
             gameLoss()
     else:
@@ -357,12 +357,12 @@ def gameLoss():                                #makes a pretty end screen
     
     with open('mathScore.json', 'a') as f:
         json.dump(todayScore, f)
-    viewScoresButton.pack()
+    viewScoresButton.place(x=300,y=400)
 
 
 def highScores():
         global playerName, score
-        viewScoresButton.pack_forget()
+        viewScoresButton.place_forget()
         questionLabel.pack_forget()
         scoreLabel.place_forget()
         heart.pack_forget()
@@ -426,6 +426,7 @@ def playAgain():             #RESETS ALL VARIABLES AND REMOVES ALL PLACED BUTTON
     global playerAnswer, playerName, ops, clicks, skips, correctAnswers, incorrectAnswers, questionNumber, correctNum, firstNum, secondNum, score, combo, selectedOp, appendOpListAdd, appendOpListDiv, appendOpListMlt, appendOpListSub, gameStart
     global firstNumB, firstNumA, secondNumB, secondNumA, correctInRow, hardMode, level
     questionLabel.pack_forget()
+    nameInstruc.config(text="enter player name")
     scoreLabel.place_forget()
     heart5.config(i=heartArt)
     heart4.config(i=heartArt)
@@ -443,7 +444,7 @@ def playAgain():             #RESETS ALL VARIABLES AND REMOVES ALL PLACED BUTTON
     levelLabel.place_forget()
     highScoreLabel.place_forget()
     nameInstruc.pack_forget()
-    viewScoresButton.pack_forget()
+    viewScoresButton.place_forget()
     firstPlaceLabel.pack_forget()
     secondPlaceLabel.pack_forget()
     thirdPlaceLabel.pack_forget()
