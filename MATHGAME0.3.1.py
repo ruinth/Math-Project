@@ -1,8 +1,9 @@
 from tkinter import *
 from random import randint as ranNum
-import re
-import json
+from pygame import mixer
 import scoremanager
+
+mixer.init()
 
 window = Tk()                #WINDOW (this creates the window)
 window.config(bg="#255ab7") #(unnessacarily) makes the background blue (its overwritten w the photo bg)
@@ -42,7 +43,7 @@ appendOpListDiv = True
 
 gameStart = False
 
-
+ScoreHandler = scoremanager.ScoreManager()  # our highscore manager :D
 
 def startButtonClick():     #place instuctions & imput box & submit button. remove start button, 
     global playerName
@@ -215,7 +216,6 @@ def placeHearts():
         heart4.pack(anchor="se")
         heart5.pack(anchor="se")
 
-
 def questionLoop():          #places the question label, and generates questions - ranNum & random ops from selected. chnages button seceretly. makes calculates answer
     global questionNumber, playerAnswer, correctNum, score, firstNum, secondNum, lenOp, selectedOp, firstNumA, firstNumB, secondNumB,secondNumA  
     firstNum = ranNum(firstNumA,firstNumB)                  #random numbers chosen for question
@@ -268,6 +268,7 @@ def checkAnswer():                                                #checks you an
     scoreLabel.config(i=scoreArt)
 
     if playerAnswer == str(correctNum):   
+        soundCorrectAnswer()
         if ScoreHandler.is_high_score(score):
             highScoreLabel.place(x=114, y=296)                        #if your answer is correct
         correctAnswers+=1           #correct answe
@@ -325,6 +326,7 @@ def skipClick():                             #for if youre feeling frisky & want
 
 def incorrectAnswer():                                                    #on incorrect answer, kills a heart & shows correct answer over score board
     global incorrectAnswers, correctNum, firstNum, secondNum, selectedOp, score
+    soundIncorrectAnswer()
     incorrectAnswers+=1
     if incorrectAnswers == 1:
         heart.config(i=heartBrokeArt)
@@ -346,9 +348,6 @@ def incorrectAnswer():                                                    #on in
             gameLoss()
 
             
-ScoreHandler = scoremanager.ScoreManager()  # our highscore manager :D
-
-
 def gameLoss():                                #makes a pretty end screen
     skipButton.config(state = DISABLED, text = "")                          #button bad
     scoreLabel.config(text=f"final score: {score}", fg="#FFFFFF", font = ("Helvetica", 15))               #final score print
@@ -360,7 +359,6 @@ def gameLoss():                                #makes a pretty end screen
 
     ScoreHandler.addHighScore(playerName, score)
     viewScoresButton.place(x=300,y=400)
-
 
 def highScores():
         global playerName, score
@@ -392,7 +390,6 @@ def highScores():
             else:
                 label.config(text=f"{places[i]}- ---")
             label.pack()
-
 
 def playAgain():             #RESETS ALL VARIABLES AND REMOVES ALL PLACED BUTTONS AND LABELS AND FINALLY PLACES START BUTTON
     global playerAnswer, playerName, ops, clicks, skips, correctAnswers, incorrectAnswers, questionNumber, correctNum, firstNum, secondNum, score, combo, selectedOp, appendOpListAdd, appendOpListDiv, appendOpListMlt, appendOpListSub, gameStart
@@ -450,7 +447,14 @@ def playAgain():             #RESETS ALL VARIABLES AND REMOVES ALL PLACED BUTTON
     hardMode = False
     startButton.place(x=334,y=220)
 
-
+def soundIncorrectAnswer():
+    mixer.music.load("mathegameasset\\sounds\\incorrect.wav")
+    mixer.music.set_volume(0.2)
+    mixer.music.play(loops=0)
+def soundCorrectAnswer():
+    mixer.music.load("mathegameasset\\sounds\\correct.wav")
+    mixer.music.set_volume(0.1)
+    mixer.music.play(loops=0)
 
 # THIS WILL BE THE ART THAT IS USED THIS BLOCK RIGHT HERE AND NOWHERE ELES
 operatorButtonArt = PhotoImage(file="mathegameasset\\MUSHBUTTON001.png").subsample(20,20)
