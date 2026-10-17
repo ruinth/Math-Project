@@ -1,1 +1,8 @@
-*.cpy
+# compiled python shi
+__pycache__/
+*.pyc
+*.pyo
+
+# vscode/idea config 
+.vscode/
+.idea/
