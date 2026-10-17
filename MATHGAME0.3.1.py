@@ -5,7 +5,7 @@ import json
 
 window = Tk()                #WINDOW (this creates the window)
 window.config(bg="#255ab7") #(unnessacarily) makes the background blue (its overwritten w the photo bg)
-window.title("The Math Game v 0.3.1")
+window.title("The Math Game v 0.3.10")
 window.resizable(False, False)
 
 
