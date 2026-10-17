@@ -272,9 +272,10 @@ def checkAnswer():                                                #checks you an
         combo+=1           #combo up+
         correctInRow+=1 
         score += 10*(combo/2) #score adding
+        score = round(score)   #score flattening
+        scoreLabel.config(text=f"score: {score}",fg="white",font = ("Helvetica", 15),)
         if hardMode == True:
             score*=1.1
-        score = round(score)   #score flattening
         if correctInRow == 5:       #if you got 5 correct, the lowest numbers rise
             for a in range(1):
                 firstNumA+=1
