@@ -9,8 +9,9 @@ window = Tk()                #WINDOW (this creates the window)
 window.config(bg="#255ab7") #(unnessacarily) makes the background blue (its overwritten w the photo bg)
 window.title("The Math Game v 0.3.10")
 window.resizable(False, False)
-
-
+#mixer.music.load("mathegameasset\\sounds\\gamesong.wav")
+#mixer.music.set_volume(1)
+#mixer.music.play(loops=999999)
 playerName =""     #this will become your chosen mame #TRANSRIJTS
 playerAnswer = -99        #wthis will become your chosen ansewer
 ops = []  #these are the operators chosen by the player
@@ -451,11 +452,16 @@ def soundIncorrectAnswer():
     mixer.music.load("mathegameasset\\sounds\\incorrect.wav")
     mixer.music.set_volume(0.2)
     mixer.music.play(loops=0)
+   # mixer.music.load("mathegameasset\\sounds\\gamesong.wav")
+   # mixer.music.set_volume(1)
+   # mixer.music.play(loops=999999)
 def soundCorrectAnswer():
     mixer.music.load("mathegameasset\\sounds\\correct.wav")
     mixer.music.set_volume(0.1)
     mixer.music.play(loops=0)
-
+    #mixer.music.load("mathegameasset\\sounds\\gamesong.wav")
+   #mixer.music.set_volume(1)
+    #mixer.music.play(loops=999999)
 # THIS WILL BE THE ART THAT IS USED THIS BLOCK RIGHT HERE AND NOWHERE ELES
 operatorButtonArt = PhotoImage(file="mathegameasset\\MUSHBUTTON001.png").subsample(20,20)
 windowBgArt= PhotoImage(file="mathegameasset\\BACKGROUNWATER001.png")
