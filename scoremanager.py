@@ -26,3 +26,12 @@ class ScoreManager:
     def saveHighScores(self):
         with open(self.filepath, 'w', encoding='utf8') as f:
             dump({'scores': self.high_scores}, f, indent=2)
+
+    def apply_sort(self):
+        self.high_scores.sort(key=lambda x: x['score'], reverse=True)
+
+    def is_high_score(self, score):
+        if len(self.high_scores) < 1:
+            return True
+        self.apply_sort()
+        return score > self.high_scores[0]['score']

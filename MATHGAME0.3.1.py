@@ -267,7 +267,9 @@ def checkAnswer():                                                #checks you an
     answerBox.delete(0,END)                                       #clears box
     scoreLabel.config(i=scoreArt)
 
-    if playerAnswer == str(correctNum):                           #if your answer is correct
+    if playerAnswer == str(correctNum):   
+        if ScoreHandler.is_high_score(score):
+            highScoreLabel.place(x=114, y=296)                        #if your answer is correct
         correctAnswers+=1           #correct answe
         combo+=1           #combo up+
         correctInRow+=1 
@@ -358,6 +360,7 @@ def gameLoss():                                #makes a pretty end screen
     ScoreHandler.addHighScore(playerName, score)
     viewScoresButton.place(x=300,y=400)
 
+
 def highScores():
         global playerName, score
         viewScoresButton.place_forget()
@@ -375,18 +378,15 @@ def highScores():
         nameInstruc.config(text="HIGH SCORES")
         nameInstruc.pack()
 
-        
+        ScoreHandler.apply_sort()
         scores = ScoreHandler.high_scores
-        sortedScores = sorted(scores, key=lambda x: x['score'], reverse=True)
-
-        highScoreLabel.place(x=114, y=296)
 
         labels = [firstPlaceLabel, secondPlaceLabel, thirdPlaceLabel]
         places = ["1st", "2nd", "3rd"]
 
         for i, label in enumerate(labels):
-            if i < len(sortedScores):
-                entry = sortedScores[i]
+            if i < len(scores):
+                entry = scores[i]
                 label.config(text=f"{places[i]}- {entry['name']} ({entry['score']})")
             else:
                 label.config(text=f"{places[i]}- ---")
