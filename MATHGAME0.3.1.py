@@ -2,6 +2,7 @@ from tkinter import *
 from random import randint as ranNum
 import re
 import json
+import scoremanager
 
 window = Tk()                #WINDOW (this creates the window)
 window.config(bg="#255ab7") #(unnessacarily) makes the background blue (its overwritten w the photo bg)
@@ -340,7 +341,10 @@ def incorrectAnswer():                                                    #on in
     else:
         if incorrectAnswers>=5:
             gameLoss()
+
             
+ScoreHandler = scoremanager.ScoreManager()  # our highscore manager :D
+
 
 def gameLoss():                                #makes a pretty end screen
     skipButton.config(state = DISABLED, text = "")                          #button bad
@@ -351,14 +355,8 @@ def gameLoss():                                #makes a pretty end screen
     playAgainButton.place(x=115,y=100)            #place button to play again
     levelLabel.config(text="")                        #removes text from turtle
 
-    strScore = "|"+str(score)+"|"
-    todayScore="!"+playerName+strScore
-    
-    
-    with open('mathScore.json', 'a') as f:
-        json.dump(todayScore, f)
+    ScoreHandler.addHighScore(playerName, score)
     viewScoresButton.place(x=300,y=400)
-
 
 def highScores():
         global playerName, score
@@ -377,50 +375,23 @@ def highScores():
         nameInstruc.config(text="HIGH SCORES")
         nameInstruc.pack()
 
-        listNames, listScores = [],[]
-        intScoreList = []
-        sortedScores = []
         
-        file = open('mathScore.json', 'r')
-        fileContent = file.read()
-    
-        nameScavenger = re.compile(r'\!\w+') # these will seperate the names & scores
-        scoreScavenger = re.compile(r'\|-*[0-9]+\|')  #   into their own list
-    
-        listNamesRAW = nameScavenger.findall(fileContent)  #these do the seperating
-        listScoresRAW = scoreScavenger.findall(fileContent)
-    
-        nameCleaner = re.compile(r'[^!]+')
-        for a in listNamesRAW:
-            listNames+=nameCleaner.findall(a)    #this & the next small block remove unwanted characters used for seperating
-    
-        scoreCleaner = re.compile(r'[^|]+')
-        for a in listScoresRAW:
-            listScores+=scoreCleaner.findall(a)
-    
-        for a in range(len(listScores)):               #this converts ths list into numbers so i can sort and move on
-            intScoreList.append(int(listScores[a]))
-    
-        sortedScores = sorted(intScoreList, reverse=True) # this creates a list of sorted scores
+        scores = ScoreHandler.high_scores
+        sortedScores = sorted(scores, key=lambda x: x['score'], reverse=True)
 
-        if score == sortedScores[0]:
-            highScoreLabel.place(x=114,y=296)
-        for a in range(len(intScoreList)):
-            if intScoreList[a]== sortedScores[0]:
-                firstPlaceLabel.config(text=f"1st- {listNames[a]}: {intScoreList[a]}")
-                firstPlaceLabel.pack()
-                break
-        for a in range(len(intScoreList)):
-            if intScoreList[a]== sortedScores[1]:
-                secondPlaceLabel.config(text=f"2nd- {listNames[a]}: {intScoreList[a]}")
-                secondPlaceLabel.pack()
-                break
-        for a in range(len(intScoreList)):
-            if intScoreList[a]== sortedScores[2]:
-                thirdPlaceLabel.config(text=f"3rd- {listNames[a]}: {intScoreList[a]}")
-                thirdPlaceLabel.pack()
-                break
-        file.close()
+        highScoreLabel.place(x=114, y=296)
+
+        labels = [firstPlaceLabel, secondPlaceLabel, thirdPlaceLabel]
+        places = ["1st", "2nd", "3rd"]
+
+        for i, label in enumerate(labels):
+            if i < len(sortedScores):
+                entry = sortedScores[i]
+                label.config(text=f"{places[i]}- {entry['name']} ({entry['score']})")
+            else:
+                label.config(text=f"{places[i]}- ---")
+            label.pack()
+
 
 def playAgain():             #RESETS ALL VARIABLES AND REMOVES ALL PLACED BUTTONS AND LABELS AND FINALLY PLACES START BUTTON
     global playerAnswer, playerName, ops, clicks, skips, correctAnswers, incorrectAnswers, questionNumber, correctNum, firstNum, secondNum, score, combo, selectedOp, appendOpListAdd, appendOpListDiv, appendOpListMlt, appendOpListSub, gameStart

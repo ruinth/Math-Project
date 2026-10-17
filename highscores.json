@@ -1,0 +1,28 @@
+{
+  "scores": [
+    {
+      "name": "Alex",
+      "score": 15
+    },
+    {
+      "name": "Sam",
+      "score": 150
+    },
+    {
+      "name": "Jordan",
+      "score": 1000
+    },
+    {
+      "name": "Riley",
+      "score": 30
+    },
+    {
+      "name": "Casey",
+      "score": 9
+    },
+    {
+      "name": "Austin",
+      "score": 180
+    }
+  ]
+}
