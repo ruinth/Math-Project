@@ -480,7 +480,7 @@ def playAgain():             #RESETS ALL VARIABLES AND REMOVES ALL PLACED BUTTON
 
 
 # THIS WILL BE THE ART THAT IS USED THIS BLOCK RIGHT HERE AND NOWHERE ELES
-operatorButtonArt = PhotoImage(file="mathegameasset\\BACKGROUNWATER001.png").subsample(20,20)
+operatorButtonArt = PhotoImage(file="mathegameasset\\MUSHBUTTON001.png").subsample(20,20)
 windowBgArt= PhotoImage(file="mathegameasset\\BACKGROUNWATER001.png")
 logLabelArt = PhotoImage(file="mathegameasset\\LOGBUTTON001.png").subsample(2,2)
 submitButtonArt = PhotoImage(file="mathegameasset\\lilypadbutton001.png").subsample(4,4)
@@ -707,9 +707,9 @@ startButton = Button(window,text="click to start",    #button for starting game!
 startButton.place(x=334,y=220)  #places the start button, as it needs to be placed
 
 
-def doSomething(event):
-    print("Mouse coordinates: " + str(event.x)+","+str(event.y))
+#def doSomething(event):
+#    print("Mouse coordinates: " + str(event.x)+","+str(event.y))
 
-window.bind("<Button-1>",doSomething) #left mouse click
+#window.bind("<Button-1>",doSomething) #left mouse click
 
 window.mainloop()       #I AM GOD, CREATOR OF WINDOW 
