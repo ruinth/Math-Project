@@ -226,7 +226,13 @@ def questionLoop():          #places the question label, and generates questions
     if selectedOp =="+":
         correctNum = firstNum + secondNum
     if selectedOp =="-":                         #ie if the index selected(operator) is -, itll ensure the answer is x - y
-        correctNum = secondNum - firstNum
+        if secondNum > firstNum:
+            _temp = firstNum
+            firstNum = secondNum
+            secondNum = _temp
+
+        correctNum = firstNum - secondNum
+
     if selectedOp =="*":
         correctNum = firstNum * secondNum
     if selectedOp =="/":                             # for division we have to do some tricks to make sure it doesn't end up in a decimal most of the time
