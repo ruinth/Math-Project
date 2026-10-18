@@ -37,6 +37,7 @@ secondNum=0
 score = 0
 combo = 0
 selectedOp = 0
+creditsRolled=1
 
 appendOpListAdd = True           #these are for adding to the list of ops
 appendOpListSub = True                #they are used as a toggle to be able to add and remove ops
@@ -62,6 +63,7 @@ def toggleMute():
 def startButtonClick():     #place instuctions & imput box & submit button. remove start button, 
     global playerName
     startButton.place_forget()                   #remove start button
+    creditsButton.place_forget()
     nameInstruc.pack(pady=20)      #tells u to put name (placing)
     nameInputBox.pack()    #box for ur name (placing)
     nameInputBox.focus() #focus you to the input box
@@ -395,6 +397,16 @@ def gameLoss():                                #makes a pretty end screen
         ScoreHandler.addHighScore(playerName, score)
     viewScoresButton.place(x=300,y=400)
 
+def rollCredits():
+    global creditsRolled
+    creditsRolled+=1
+    if creditsRolled%2==0:
+        startButton.place_forget()
+        creditsButton.config(text="go  back")
+    else:
+        startButton.place(x=334,y=220)
+        creditsButton.config(text="CREDITS")
+
 def highScores():
         global playerName, score
         viewScoresButton.place_forget()
@@ -717,6 +729,15 @@ viewScoresButton = Button(window, text="View High Scores",
                          i = logLabelArt,
                          command=highScores)
 
+creditsButton = Button(window, text="CREDITS",
+                       command=rollCredits,
+                       font=("Helvetica", 15),
+                       bg= "#255ab7",
+                       i=logLabelArt,
+                       border=0,
+                       compound="center",
+                       fg="#FFFFFF")
+
 startButton = Button(window,text="click to start",    #button for starting game!        (button)
                      command= startButtonClick,   #runs command
                      font = ("Helvetica", 15),
@@ -729,6 +750,7 @@ startButton = Button(window,text="click to start",    #button for starting game!
                      width=140)
 
 startButton.place(x=334,y=220)  #places the start button, as it needs to be placed
+creditsButton.place(x=300,y=500)
 muteButton.place(x=690, y=20)
 
 
