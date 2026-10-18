@@ -211,7 +211,7 @@ def startGame():        #ask first question(startubf the loop), switcg ready but
     window.unbind("<slash>")
     window.unbind("<Return>")                            #startub loop
     areYouReadyLabel.pack_forget()                                #kill ready questions label
-
+    scoreLabel.config(text=f"score: {score}", i=scoreFish1)
     if hardMode == True:
         for a in range(4):
             firstNumA+=1
@@ -288,7 +288,6 @@ def checkAnswer():                                                #checks you an
     scoreLabel.config(text=f"score: {score}",fg="white",font = ("Helvetica", 15),)        #configs score every round
     playerAnswer = answerBox.get()                                #grabs your answer from the box 
     answerBox.delete(0,END)                                       #clears box
-    scoreLabel.config(i=scoreFish1)
 
     if playerAnswer == str(correctNum):   
         soundCorrectAnswer()
