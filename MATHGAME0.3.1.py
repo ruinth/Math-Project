@@ -43,8 +43,20 @@ appendOpListMlt = True
 appendOpListDiv = True
 
 gameStart = False
+music = 1
 
 ScoreHandler = scoremanager.ScoreManager()  # our highscore manager :D
+def toggleMute():
+    global music
+    music+=1
+    if music%2 == 0:
+        mixer.Channel(1).set_volume(0)
+        muteButton.config(i=muteButtonArt)
+    else:
+        mixer.Channel(1).set_volume(1)
+        muteButton.config(i=singingArt)
+
+
 
 def startButtonClick():     #place instuctions & imput box & submit button. remove start button, 
     global playerName
@@ -481,6 +493,8 @@ highScoreArt = PhotoImage(file="mathegameasset\\highscore.png").subsample(2,2)
 firstPlaceArt = PhotoImage(file="mathegameasset\\goldFISH.png").subsample(3,3)
 secondPlaceArt = PhotoImage(file="mathegameasset\\SILVfish.png").subsample(3,3)
 thirdPlaceArt = PhotoImage(file="mathegameasset\\bronzFish.png").subsample(3,3)
+muteButtonArt = PhotoImage(file="mathegameasset\\muteClam.png").subsample(2,2)
+singingArt = PhotoImage(file="mathegameasset\\singClam.png").subsample(2,2)
 
 backgroundLabl = Label(window, i=windowBgArt)   #this makes a big label to be the background, and give that label the background art
 backgroundLabl.place(x=-5,y=-5)              #places label so its a little out
@@ -579,6 +593,12 @@ readyButton = Button(window, text="Yes",      #ready for game button            
                     bg = "#255ab7",
                     fg = "#FFFFFF",
                     compound="center")
+
+muteButton = Button(window, text="",
+                    command=toggleMute,
+                    bg="#255ab7",
+                    i=singingArt,
+                    border=0)
 
 skipButton = Button(window, text = "skip",  #skip button                         (button)
                     command=skipClick,              #run command
@@ -686,6 +706,7 @@ startButton = Button(window,text="click to start",    #button for starting game!
                      width=140)
 
 startButton.place(x=334,y=220)  #places the start button, as it needs to be placed
+muteButton.place(x=690, y=20)
 
 
 #def doSomething(event):
