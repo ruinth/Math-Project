@@ -24,6 +24,7 @@ secondNumA =3
 secondNumB = 12
 correctInRow = 0
 hardMode = False
+devMode = False
 codes = 0
 
 skips = 5               #some useful things to keep track of
@@ -69,8 +70,11 @@ def startButtonClick():     #place instuctions & imput box & submit button. remo
 def codeCheckBOUND(event=None):
     codeCheck()
 def codeCheck():
-    global hardMode, codes, playerName
+    global hardMode, codes, playerName, devMode
     playerName = nameInputBox.get()
+    if 'dev' in playerName:
+        devMode= True
+        window.bind("<Button-1>",doSomething) #left mouse click
     if len(playerName) == 0:
         codes+=1
     if 'hard' in playerName:
@@ -373,8 +377,8 @@ def gameLoss():                                #makes a pretty end screen
     questionLabel.config(text="game over")             #game over rexr
     playAgainButton.place(x=115,y=100)            #place button to play again
     levelLabel.config(text="")                        #removes text from turtle
-
-    ScoreHandler.addHighScore(playerName, score)
+    if devMode == False:
+        ScoreHandler.addHighScore(playerName, score)
     viewScoresButton.place(x=300,y=400)
 
 def highScores():
@@ -410,7 +414,7 @@ def highScores():
 
 def playAgain():             #RESETS ALL VARIABLES AND REMOVES ALL PLACED BUTTONS AND LABELS AND FINALLY PLACES START BUTTON
     global playerAnswer, playerName, ops, clicks, skips, correctAnswers, incorrectAnswers, questionNumber, correctNum, firstNum, secondNum, score, combo, selectedOp, appendOpListAdd, appendOpListDiv, appendOpListMlt, appendOpListSub, gameStart
-    global firstNumB, firstNumA, secondNumB, secondNumA, correctInRow, hardMode, level
+    global firstNumB, firstNumA, secondNumB, secondNumA, correctInRow, hardMode, level, devMode
     questionLabel.pack_forget()
     nameInstruc.config(text="enter player name")
     scoreLabel.place_forget()
@@ -462,6 +466,7 @@ def playAgain():             #RESETS ALL VARIABLES AND REMOVES ALL PLACED BUTTON
     appendOpListDiv = True
     gameStart = False
     hardMode = False
+    devMode = False
     startButton.place(x=334,y=220)
 
 def soundIncorrectAnswer():
@@ -709,9 +714,10 @@ startButton.place(x=334,y=220)  #places the start button, as it needs to be plac
 muteButton.place(x=690, y=20)
 
 
-#def doSomething(event):
-#    print("Mouse coordinates: " + str(event.x)+","+str(event.y))
+def doSomething(event):
+    global devMode
+    if devMode == True:
+        print("Mouse coordinates: " + str(event.x)+","+str(event.y))
 
-#window.bind("<Button-1>",doSomething) #left mouse click
 
 window.mainloop()       #I AM GOD, CREATOR OF WINDOW 
