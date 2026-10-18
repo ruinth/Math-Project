@@ -502,10 +502,8 @@ chooseOpsArt = PhotoImage(file="mathegameasset\\fishLabel2.png").subsample(2,2)
 readyLabelArt = PhotoImage(file="mathegameasset\\duckbuttonart.png").subsample(2,2) 
 readyButtonArt = PhotoImage(file="mathegameasset\\fish3.png").subsample(2,2) 
 submitAnswerArt = PhotoImage(file="mathegameasset\\fishLabel.png").subsample(2,2) 
-
 heartArt = PhotoImage(file="mathegameasset\\HEARTS.png")
 heartBrokeArt = PhotoImage(file="mathegameasset\\HEARTBROKEN.png")
-
 levelLabelArt = PhotoImage(file="mathegameasset\\levelART.png")
 playAgainArt = PhotoImage(file="mathegameasset\\birdplayagin.png")
 highScoreArt = PhotoImage(file="mathegameasset\\highscore.png").subsample(2,2)
@@ -514,7 +512,6 @@ secondPlaceArt = PhotoImage(file="mathegameasset\\SILVfish.png").subsample(3,3)
 thirdPlaceArt = PhotoImage(file="mathegameasset\\bronzFish.png").subsample(3,3)
 muteButtonArt = PhotoImage(file="mathegameasset\\muteClam.png").subsample(2,2)
 singingArt = PhotoImage(file="mathegameasset\\singClam.png").subsample(2,2)
-
 scoreFish1 = PhotoImage(file="mathegameasset\\scorefish1.png")
 scoreFish2= PhotoImage(file="mathegameasset\\scorefish2.png")
 scoreFish3= PhotoImage(file="mathegameasset\\scorefish3.png")
