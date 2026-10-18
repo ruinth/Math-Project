@@ -8,6 +8,7 @@ mixer.init()
 window = Tk()                #WINDOW (this creates the window)
 window.config(bg="#255ab7") #(unnessacarily) makes the background blue (its overwritten w the photo bg)
 window.title("The Math Game v 0.3.10")
+window.iconbitmap("mathegameasset\\icon.ico")
 window.resizable(False, False)
 
 mixer.Channel(1).play(mixer.Sound('mathegameasset\\sounds\\gamesong.wav'), loops=99999)
