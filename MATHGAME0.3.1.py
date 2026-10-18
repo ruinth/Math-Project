@@ -402,9 +402,11 @@ def rollCredits():
     creditsRolled+=1
     if creditsRolled%2==0:
         startButton.place_forget()
+        creditLabel.pack()
         creditsButton.config(text="go  back")
     else:
         startButton.place(x=334,y=220)
+        creditLabel.pack_forget()
         creditsButton.config(text="CREDITS")
 
 def highScores():
@@ -530,6 +532,7 @@ scoreFish3= PhotoImage(file="mathegameasset\\scorefish3.png")
 scoreFish4= PhotoImage(file="mathegameasset\\scorefish4.png")
 scoreFish5= PhotoImage(file="mathegameasset\\scorefish5.png")
 scoreFish6= PhotoImage(file="mathegameasset\\scorefish6.png")
+creditArt = PhotoImage(file="mathegameasset\\creditART.png")
 
 backgroundLabl = Label(window, i=windowBgArt)   #this makes a big label to be the background, and give that label the background art
 backgroundLabl.place(x=-5,y=-5)              #places label so its a little out
@@ -605,6 +608,8 @@ heart2 = Label(window, i=heartArt, border=0)
 heart3 = Label(window, i=heartArt, border=0)
 heart4 = Label(window, i=heartArt, border=0)
 heart5 = Label(window, i=heartArt, border=0)
+
+creditLabel = Label(window, i=creditArt)
 
 levelLabel = Label(window, text=f"level: {level}",    #will display what lebel you are on  (label)
                     i= levelLabelArt,                  #using turtle art
