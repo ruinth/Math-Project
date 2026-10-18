@@ -282,11 +282,11 @@ def questionLoop():          #places the question label, and generates questions
 def checkAnswerBound(event=None):         #for enter key a few lines up
     checkAnswer()
 def checkAnswer():                                                #checks you answer, & if & or youtyped any codes in
-    global playerAnswer, correctNum, correctAnswers, incorrectAnswers, skips, combo, score, firstNumA, firstNumB, secondNumA, secondNumB, correctInRow, level
+    global playerAnswer, correctNum, correctAnswers, incorrectAnswers, skips, combo, score, firstNumA, firstNumB, secondNumA, secondNumB, correctInRow, level, devMode
     scoreLabel.config(text=f"score: {score}",fg="white",font = ("Helvetica", 15),)        #configs score every round
     playerAnswer = answerBox.get()                                #grabs your answer from the box 
     answerBox.delete(0,END)                                       #clears box
-    scoreLabel.config(i=scoreArt)
+    scoreLabel.config(i=scoreFish1)
 
     if playerAnswer == str(correctNum):   
         soundCorrectAnswer()
@@ -300,6 +300,7 @@ def checkAnswer():                                                #checks you an
         scoreLabel.config(text=f"score: {score}",fg="white",font = ("Helvetica", 15),)
         if hardMode == True:
             score*=1.1
+        fishScoreChanger()
         if correctInRow == 5:       #if you got 5 correct, the lowest numbers rise
             for a in range(1):
                 firstNumA+=1
@@ -359,7 +360,7 @@ def incorrectAnswer():                                                    #on in
         heart4.config(i=heartBrokeArt)
     elif incorrectAnswers == 5:
         heart5.config(i=heartBrokeArt)
-    scoreLabel.config(i=scoreResetArt, text= f"{firstNum}{selectedOp}{secondNum}={correctNum}", fg="black", font = ("Helvetica", 15),)
+    scoreLabel.config(text= f"{firstNum}{selectedOp}{secondNum}={correctNum}", fg="black", font = ("Helvetica", 15),)
     if hardMode == True:
         score=0
         if incorrectAnswers>=3:
@@ -368,7 +369,20 @@ def incorrectAnswer():                                                    #on in
         if incorrectAnswers>=5:
             gameLoss()
 
-            
+
+def fishScoreChanger():
+    global score
+    if score >= 50:
+        scoreLabel.config(i=scoreFish2)
+    if score >= 200:
+        scoreLabel.config(i=scoreFish3)     
+    if score >=  450:
+        scoreLabel.config(i=scoreFish4)     
+    if score >= 1200:
+        scoreLabel.config(i=scoreFish5)
+    if score >= 3500:
+        scoreLabel.config(i=scoreFish6)
+
 def gameLoss():                                #makes a pretty end screen
     skipButton.config(state = DISABLED, text = "")                          #button bad
     scoreLabel.config(text=f"final score: {score}", fg="#FFFFFF", font = ("Helvetica", 15))               #final score print
@@ -488,10 +502,10 @@ chooseOpsArt = PhotoImage(file="mathegameasset\\fishLabel2.png").subsample(2,2)
 readyLabelArt = PhotoImage(file="mathegameasset\\duckbuttonart.png").subsample(2,2) 
 readyButtonArt = PhotoImage(file="mathegameasset\\fish3.png").subsample(2,2) 
 submitAnswerArt = PhotoImage(file="mathegameasset\\fishLabel.png").subsample(2,2) 
-scoreArt = PhotoImage(file="mathegameasset\\fish3.png").subsample(2,2) 
+
 heartArt = PhotoImage(file="mathegameasset\\HEARTS.png")
 heartBrokeArt = PhotoImage(file="mathegameasset\\HEARTBROKEN.png")
-scoreResetArt = PhotoImage(file="mathegameasset\\score0.png").subsample(2,2) 
+
 levelLabelArt = PhotoImage(file="mathegameasset\\levelART.png")
 playAgainArt = PhotoImage(file="mathegameasset\\birdplayagin.png")
 highScoreArt = PhotoImage(file="mathegameasset\\highscore.png").subsample(2,2)
@@ -500,6 +514,13 @@ secondPlaceArt = PhotoImage(file="mathegameasset\\SILVfish.png").subsample(3,3)
 thirdPlaceArt = PhotoImage(file="mathegameasset\\bronzFish.png").subsample(3,3)
 muteButtonArt = PhotoImage(file="mathegameasset\\muteClam.png").subsample(2,2)
 singingArt = PhotoImage(file="mathegameasset\\singClam.png").subsample(2,2)
+
+scoreFish1 = PhotoImage(file="mathegameasset\\scorefish1.png")
+scoreFish2= PhotoImage(file="mathegameasset\\scorefish2.png")
+scoreFish3= PhotoImage(file="mathegameasset\\scorefish3.png")
+scoreFish4= PhotoImage(file="mathegameasset\\scorefish4.png")
+scoreFish5= PhotoImage(file="mathegameasset\\scorefish5.png")
+scoreFish6= PhotoImage(file="mathegameasset\\scorefish6.png")
 
 backgroundLabl = Label(window, i=windowBgArt)   #this makes a big label to be the background, and give that label the background art
 backgroundLabl.place(x=-5,y=-5)              #places label so its a little out
@@ -561,7 +582,7 @@ questionLabel = Label(window,
 scoreLabel = Label(window, text=(f"score: {score}"),  #will display your score             (label)
                    font = ("Helvetica", 15),
                    bg = "#255ab7",                  #background color
-                   i = scoreArt,
+                   i = scoreFish1,
                    compound="center",
                    border=0,
                    fg = "#FFFFFF")                  #text color
