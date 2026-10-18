@@ -1,6 +1,10 @@
 {
   "scores": [
     {
+      "name": "greeen bean",
+      "score": 4980
+    },
+    {
       "name": "George",
       "score": 1500
     },
@@ -13,36 +17,10 @@
       "score": 400
     },
     {
-      "name": "123",
-      "score": 360
-    },
-    {
       "name": "Austin",
       "score": 150
-    },
-    {
-      "name": "austin",
-      "score": 140
-    },
-    {
-      "name": "1",
-      "score": 5
-    },
-    {
-      "name": "1",
-      "score": 0
-    },
-    {
-      "name": "1243",
-      "score": 0
-    },
-    {
-      "name": "1",
-      "score": 0
-    },
-    {
-      "name": "greeen bean",
-      "score": 4980
     }
+    
+    
   ]
 }
