@@ -1,24 +1,23 @@
 from tkinter import *
 from random import randint as ranNum
-from pygame import mixer
+from pygame import mixer       #for music
 import scoremanager
 
-mixer.init()
+mixer.init()                 #makes msuic be ready
 
-window = Tk()                #WINDOW (this creates the window)
-window.config(bg="#255ab7") #(unnessacarily) makes the background blue (its overwritten w the photo bg)
-window.title("The Math Game v 0.3.10")
-window.iconbitmap("mathegameasset\\icon.ico")
-window.resizable(False, False)
+window = Tk()                # (this creates the window) 
+window.title("The Math Game v 0.3.2")                   #title
+window.iconbitmap("mathegameasset\\icon.ico")         #icon (only in top corner. real icon is changed manually rn)
+window.resizable(False, False)                       #no resizing the window
 
-mixer.Channel(1).play(mixer.Sound('mathegameasset\\sounds\\gamesong.wav'), loops=99999)
+mixer.Channel(1).play(mixer.Sound('mathegameasset\\sounds\\gamesong.wav'), loops=99999)   #starts the theme song. plays it 100 times
 
 playerName =""     #this will become your chosen mame #TRANSRIJTS
 playerAnswer = -99        #wthis will become your chosen ansewer
 ops = []  #these are the operators chosen by the player
-clicks = 0 #click counter for def submitClick():
-level = 1
+clicks = 0 #click counter for def submitClick(): (submitclick is a mess. why not two buttons instead)
 
+level = 1                    #some useful things to keep track of
 firstNumA =1
 firstNumB =10
 secondNumA =3
@@ -27,8 +26,7 @@ correctInRow = 0
 hardMode = False
 devMode = False
 codes = 0
-
-skips = 5               #some useful things to keep track of
+skips = 5               
 correctAnswers = 0 
 incorrectAnswers = 0
 questionNumber = 0
@@ -39,111 +37,113 @@ score = 0
 combo = 0
 selectedOp = 0
 creditsRolled=1
+music = 1
+gameStart = False
 
 appendOpListAdd = True           #these are for adding to the list of ops
 appendOpListSub = True                #they are used as a toggle to be able to add and remove ops
 appendOpListMlt = True
 appendOpListDiv = True
 
-gameStart = False
-music = 1
-
 ScoreHandler = scoremanager.ScoreManager()  # our highscore manager :D
-def toggleMute():
+
+def toggleMute():              #this is the command that runs on clicking the mute button
     global music
-    music+=1
-    if music%2 == 0:
-        mixer.Channel(1).set_volume(0)
+    music+=1                               
+    if music%2 == 0:                            
+        mixer.Channel(1).set_volume(0)          #sets volume to 0 & closes the clam 
         muteButton.config(i=muteButtonArt)
     else:
-        mixer.Channel(1).set_volume(1)
+        mixer.Channel(1).set_volume(1)            #or sets volume to 1 &opens the clam
         muteButton.config(i=singingArt)
 
-
-
-def startButtonClick():     #place instuctions & imput box & submit button. remove start button, 
+def startButtonClick():     #this is the command that runs on clicking the start bytton
     global playerName
-    startButton.place_forget()                   #remove start button
+    startButton.place_forget()                   #remove start button & credits button
     creditsButton.place_forget()
-    nameInstruc.pack(pady=20)      #tells u to put name (placing)
-    nameInputBox.pack()    #box for ur name (placing)
-    nameInputBox.focus() #focus you to the input box
-    nameInputBox.bind("<Return>", codeCheckBOUND)      #makes it so you can hit enter (feeling fristy huh?) to subn mit name, making th ebyttib USELESS FUCK DAMN NOOOOOO imj so sorry submitButton </3
-    submitButton.place(x=258, y=176)   #submit button (placing)
+    nameInstruc.pack(pady=20)               #places instruction label & input box 
+    nameInputBox.pack()                 
+    nameInputBox.focus()                     #focus you to the input box
+    nameInputBox.bind("<Return>", codeCheckBOUND)    #binds enter key to inp box
+    submitButton.place(x=258, y=176)      #placing submit button
+
 def codeCheckBOUND(event=None):
     codeCheck()
-def codeCheck():
+def codeCheck():                               #this is the command that runs when you submit your name
     global hardMode, codes, playerName, devMode
-    playerName = nameInputBox.get()
-    if 'dev' in playerName:
+    playerName = nameInputBox.get()   
+    if 'dev' in playerName:                     #if dev, prints location on click & turns  devMode on
         devMode= True
-        window.bind("<Button-1>",doSomething) #left mouse click
-    if len(playerName) == 0:
+        window.bind("<Button-1>",devClick) 
+    if len(playerName) == 0:                      #if empty, add code
         codes+=1
-    if 'hard' in playerName:
-        hardMode=True
+    if 'hard' in playerName:                        # if hard, turns hm on, add code
+        hardMode=True                                       
         codes+=1
-    if codes >= 1:
+    if codes >= 1:   
         nameInputBox.delete(0,END)
-        codes = 0
+        codes = 0                           #on code, empty codes & makes you choose again
         startButtonClick()
     else:
-        submitClick()
+        submitClick()                      #otherwise, runs command
+
+def devClick(event):            #this is the func to make placing things easier when devmode is on
+    global devMode
+    if devMode == True:
+        print("Mouse x=" + str(event.x)+", y="+str(event.y))
+
 def submitBOUND(event=None):
     submitClick()
-def submitClick():                                    #this is when you click the submit button
+def submitClick():                                    #this is the command that runs when you click the submit button
     global playerName, clicks, ops, gameStart
-    clicks+=1 #well it was clicked right?
-    if clicks == 1:                        #first click
-        nameInputBox.pack_forget()        #removes inputBox for name
-        submitButton.place_forget()   #removes bthe button to submit
-        nameInstruc.pack_forget()       #removes telling you to enter name
+    clicks+=1        
+    if clicks == 1:                        #first time in the block
+        nameInputBox.pack_forget()       
+        submitButton.place_forget()    #removes submit button, instructions & box for name
+        nameInstruc.pack_forget()      
 
-        playerName = nameInputBox.get()   #gets name
-        nameTag.config(text=f"you are: {playerName}")  #makes a label say that
-        nameTag.place(x=270,y=56)                                             #makes said label
-        showOperators()               #shows the operators
+        playerName = nameInputBox.get()                   #gets name from inputbox ^
+        nameTag.config(text=f"you are: {playerName}")  #gives your name to the nametag
+        nameTag.place(x=270,y=56)                        #places nametag label
+        showOperators()               #then places the screen for selecting your operators
 
-    if clicks > 1:                                  #second click
-        clicks+=1   #see line 41's comment
-        if ops == []:                     #if no ops selected, tells you that
-            noOpsPicked.pack(pady=10)            #no ops were piked, duh
-
-        else:                        #if ops selected
-
-            addButton.place_forget()       #removes + byttons 
-            subButton.place_forget()    #remov - btn
-            divButton.place_forget() #remove / btn
-            mltButton.place_forget() #remove * btn
-            submitButton.place_forget()  #remove submit buttn
-            resetOpsButton.place_forget()   #removes reset ops buttn
-            nameTag.place_forget()         #removes nametag
-            chooseOpInstrc.place_forget()      #removes telling u to choose ops
-            noOpsPicked.pack_forget()            #incanse u fucked it all up, its gone now
+    if clicks > 1:                    #second time in the block. please see def showOperators(): first
+        clicks+=1                            #(this is the commmand that runs when you hit submit ops)
+        if ops == []:                     
+            noOpsPicked.pack(pady=10)           #on no operators selected, tells you no ops selected
+        else:                      
+            addButton.place_forget()       
+            subButton.place_forget()
+            divButton.place_forget()
+            mltButton.place_forget()           #when operators selected, removes all buttons & labels from sceern
+            submitButton.place_forget()
+            resetOpsButton.place_forget()  
+            nameTag.place_forget()      
+            chooseOpInstrc.place_forget()     
+            noOpsPicked.pack_forget()          
             submitOpsButton.place_forget()
-            if gameStart == False:
-                gameStart = True
-                areYouReadyLabel.pack(pady=30)    #places label asking if you are ready
-                readyButton.pack(pady=10)     #you are going to be ready. only yes button
-                readyButton.focus()
-                readyButton.bind("<Return>",startGameBOUND)
+            if gameStart == False:                 #??? not sure 
+                gameStart = True           
+                areYouReadyLabel.pack(pady=30)     #places the label & yes button for if you are ready to play
+                readyButton.pack(pady=10)    
+                readyButton.focus()                                    #ready bytton runs startGame command
+                readyButton.bind("<Return>",startGameBOUND)         #binds enter key to yes button ^
 
-def showOperators():                                 #places 5 buttons & two labels.
- 
-    chooseOpInstrc.place(x=320, y=166)               #tells you to choose
-
-    addButton.place(x=293, y= 258)            #these 4 are + - * / buttons being placed
+def showOperators(): #this is the command that runs when you submit your name
+    chooseOpInstrc.place(x=320, y=166)             
+    addButton.place(x=293, y= 258)            #these are instructions & the + - * / buttons being placed
     subButton.place(x=333, y= 256)       
     mltButton.place(x=374, y= 257)     
     divButton.place(x=418, y= 260)    
-    window.bind("<plus>", addOpBOUND)                 #these allow you to hit the letter to add or remove it from list instead of clicking
+    window.bind("<plus>", addOpBOUND)       #these allow you to hit the symbol to toggle
     window.bind("<minus>", subOpBOUND)
     window.bind("<asterisk>", mulOpBOUND)
     window.bind("<slash>", divOpBOUND)
-    window.bind("<Return>", submitBOUND)               #this makes enter key work^-^
-    window.focus()
-    resetOpsButton.place(x=252,y=255)    #resets all buttons to unclicked position  (button place)
-    submitOpsButton.place(x=490, y=260) # submits selcected operatoes to lists of ops (button placemnet)
+    
+    window.focus()                        #?
+    resetOpsButton.place(x=252,y=255)    #places btton for reseting your selections 
+    submitOpsButton.place(x=490, y=260) # places button for  submitting your chosen op
+    window.bind("<Return>", submitBOUND)  #this binds enter key to submit button^
 
 def addOpBOUND(event=None):
     addOp()
@@ -202,85 +202,78 @@ def resetOpsClick():    #this resets all of the operatos buttons to the unclicke
     subButton.config(relief=RAISED, fg = "#000000")             
     mltButton.config(relief=RAISED, fg = "#000000")
     divButton.config(relief=RAISED, fg = "#000000")
+
 def startGameBOUND(event=None):
     startGame()
-def startGame():        #ask first question(startubf the loop), switcg ready button for submitAns button, applies entry box for answers 
+def startGame():        #this is the commmand that runs when you hit "yes" to the ready button 
     global firstNumA, firstNumB, secondNumB, secondNumA, level
     window.unbind("<plus>")        
     window.unbind("<minus>")
-    window.unbind("<asterisk>")             #the unbindening   (so it doersnt fuck up and trigger shit it shouldn't)
+    window.unbind("<asterisk>")             #unbinds operator keys so you cannot mess with list mid game
     window.unbind("<slash>")
-    window.unbind("<Return>")                            #startub loop
-    areYouReadyLabel.pack_forget()                                #kill ready questions label
-    scoreLabel.config(text=f"score: {score}", i=scoreFish1)
+    window.unbind("<Return>")                           
+    areYouReadyLabel.pack_forget()                             #remove ready label& button
+    readyButton.pack_forget()                         
+    scoreLabel.config(text=f"score: {score}", i=scoreFish1)  #this is a fish displaying your score. *configuring*
+    levelLabel.config(text=f"level: {level}")  #level label being configured
     if hardMode == True:
         for a in range(4):
-            firstNumA+=1
+            firstNumA+=1               #if you are in hardmode, its harder. 
             firstNumB+=2
             secondNumA+=1
             secondNumB+=2
             level+=1
-    questionLoop()  
-
-    placeHearts()
+            levelLabel.config(text=f"level: {level}")  #makes level label reflect that
+    questionLabel.pack()          #places label that will ask question, & box that you'll input answers in
+    answerBox.pack()                                      
+    submitAnswerButton.pack()            #button for clicking submitANswer - and label displaying level number
+    levelLabel.place(x=303,y=203)
+    scoreLabel.place(x=435,y=206)                                       #places score label
+    placeHearts()                   #places hearts
+    questionLoop()                       #starts loop by running "asking the question" (other half is "checking the answer")    
 
 def placeHearts():
     if hardMode == True:
         heart.pack(anchor="se")
-        heart2.pack(anchor="se")
+        heart2.pack(anchor="se")            #if you are in hardmode, its harder
         heart3.pack(anchor="se")
     else:
         heart.pack(anchor="se")
-        heart2.pack(anchor="se")
+        heart2.pack(anchor="se")           #places 5 lives for you!
         heart3.pack(anchor="se")
         heart4.pack(anchor="se")
         heart5.pack(anchor="se")
 
-def questionLoop():          #places the question label, and generates questions - ranNum & random ops from selected. chnages button seceretly. makes calculates answer
+def questionLoop():        #one half of the gameplay loop
     global questionNumber, playerAnswer, correctNum, score, firstNum, secondNum, lenOp, selectedOp, firstNumA, firstNumB, secondNumB,secondNumA  
     firstNum = ranNum(firstNumA,firstNumB)                  #random numbers chosen for question
     secondNum = ranNum(secondNumA,secondNumB)
-    lenOp = (len(ops)-1)                    #because list start at index 0
-    selectedOp = ops[ranNum(0,lenOp)]   #this lets me print the question, and test what the operator is for calculating answers
-
-    if selectedOp =="+":
+    lenOp = (len(ops)-1)                    #list start at index 0
+    selectedOp = ops[ranNum(0,lenOp)]   #selected a random operator
+    if selectedOp =="+":                        # if the selected op is +, itll make the question x - y
         correctNum = firstNum + secondNum
-    if selectedOp =="-":                         #ie if the index selected(operator) is -, itll ensure the answer is x - y
+    if selectedOp =="-":                         # for sub we have to take some proactive measures to remove negative answers
         if secondNum > firstNum:
-            _temp = firstNum
+            _temp = firstNum                               #they were unfun to enter
             firstNum = secondNum
             secondNum = _temp
         correctNum = firstNum - secondNum
-    if selectedOp =="*":
+    if selectedOp =="*":                       
         correctNum = firstNum * secondNum
-    if selectedOp =="/":                             # for division we have to do some tricks to make sure it doesn't end up in a decimal most of the time
+    if selectedOp =="/":                             #division does tricks to make all #s intergers everytime
         correctNum = firstNum / secondNum
-        while correctNum%1!=0 and firstNum != secondNum:         # thats making sure it has no remader when divided by one
-            firstNum=ranNum(1,200)                       #making one number way bigger
-            secondNum=ranNum(3,15)                                               #and one little bigger
+        while correctNum%1!=0 and firstNum != secondNum:         # thats by making sure it has no remader when divided by one
+            firstNum=ranNum(1,200)                      
+            secondNum=ranNum(3,15)                                             
             correctNum = firstNum / secondNum   
-    correctNum = round(correctNum)                       #this makes it have no ".0" at the end of the answer
-
-
-    questionNumber+=1                                         #adds one to questions asked, becyase a q was aske d
-    questionLabel.config(text=f"Q{questionNumber}: {firstNum} {selectedOp} {secondNum}")  #THIS SETS THE LABEL TO THE QUESTION
-    questionLabel.pack()                                                                    # THIS PLACES THE LABEL WITH THE QUESTION
-
-    levelLabel.place(x=303,y=203)
-    levelLabel.config(text=f"level: {level}")
-    answerBox.pack()                                                                #THIS PLACES THE BOX WHERE YOU ANSWER
-    submitAnswerButton.config(text="submit answer", command = checkAnswer)      #configures button to check your answer with the def checkAnswer func // CONTINUES QUESTION / ANSWER LOOP
-    submitAnswerButton.pack()                              #places button for you to submit answer\
-    answerBox.bind("<Return>", checkAnswerBound)          #this allows for using the enter key to answer as well as submit buton
-    answerBox.focus()                 #focus int he box
-    scoreLabel.place(x=435,y=206)                                       #places score
-    
-    readyButton.pack_forget()                         #removes previous button that was forced to be submit answer
-
-
+    correctNum = round(correctNum)                       #rounds the answer down to NO decimal places (2 inst of 2.0)
+    questionNumber+=1    #adds 1, for obvi- below configs label to print the question
+    questionLabel.config(text=f"Q{questionNumber}: {firstNum} {selectedOp} {secondNum}")   
+    answerBox.bind("<Return>", checkAnswerBound)         
+    answerBox.focus()     #focus in the answer box ^ lets you press enter to answer
     if skips >0:                          #if you have any skips it'll make the skips button 
         skipButton.bind("<Return>", skipClickBOUND)      #so you can tab enter to skip ^*^
-        skipButton.place(x=360,y=265)
+        skipButton.place(x=360,y=265)                  
 
 def checkAnswerBound(event=None):         #for enter key a few lines up
     checkAnswer()
@@ -310,6 +303,7 @@ def checkAnswer():                                                #checks you an
                 secondNumA+=1
                 secondNumB+=2
                 level+=1
+                levelLabel.config(text=f"level: {level}") 
             correctInRow=0
         
 
@@ -711,6 +705,7 @@ divButton = Button(window, text="/",
 
 submitAnswerButton = Button(window, text="submit answer",   #submit answer button       (button)
                             font = ("Helvetica", 15),
+                            command=checkAnswer,
                             bg= "#255ab7",          #background  color
                             i = submitAnswerArt,         #red fish
                             compound="center",         #below art
@@ -759,10 +754,7 @@ creditsButton.place(x=300,y=500)
 muteButton.place(x=690, y=20)
 
 
-def doSomething(event):
-    global devMode
-    if devMode == True:
-        print("Mouse coordinates: " + str(event.x)+","+str(event.y))
+
 
 
 window.mainloop()       #I AM GOD, CREATOR OF WINDOW 
