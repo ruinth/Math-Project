@@ -271,32 +271,31 @@ def questionLoop():        #one half of the gameplay loop
     questionLabel.config(text=f"Q{questionNumber}: {firstNum} {selectedOp} {secondNum}")   
     answerBox.bind("<Return>", checkAnswerBound)         
     answerBox.focus()     #focus in the answer box ^ lets you press enter to answer
-    if skips >0:                          #if you have any skips it'll make the skips button 
-        skipButton.bind("<Return>", skipClickBOUND)      #so you can tab enter to skip ^*^
+    if skips >0:                          #if you have any skips it'll make the skips button (happens every loop bc idk im bad)
+        skipButton.bind("<Return>", skipClickBOUND)      #so you can tab to enter to skip ^^
         skipButton.place(x=360,y=265)                  
 
-def checkAnswerBound(event=None):         #for enter key a few lines up
+def checkAnswerBound(event=None):
     checkAnswer()
-def checkAnswer():                                                #checks you answer, & if & or youtyped any codes in
+def checkAnswer():    #the commands that runs when we enter our answer
     global playerAnswer, correctNum, correctAnswers, incorrectAnswers, skips, combo, score, firstNumA, firstNumB, secondNumA, secondNumB, correctInRow, level, devMode
     scoreLabel.config(text=f"score: {score}",fg="white",font = ("Helvetica", 15),)        #configs score every round
-    playerAnswer = answerBox.get()                                #grabs your answer from the box 
-    answerBox.delete(0,END)                                       #clears box
-
+    playerAnswer = answerBox.get()          #grabs your answer from the box 
+    answerBox.delete(0,END)              #clears your input
     if playerAnswer == str(correctNum):   
         soundCorrectAnswer()
-        if ScoreHandler.is_high_score(score):
-            highScoreLabel.place(x=114, y=296)                        #if your answer is correct
-        correctAnswers+=1           #correct answe
+        if ScoreHandler.is_high_score(score):   #if you have highscore, shwo yoy!
+            highScoreLabel.place(x=114, y=296)              
+        correctAnswers+=1              #if your answer is correct
         combo+=1           #combo up+
         correctInRow+=1 
-        score += 10*(combo/2) #score adding
-        score = round(score)   #score flattening
+        score += 10*(((combo)+(level)*0.5))
+        score = round(score)   #rounds score to NO decimal places   vvv configs score for uou!
         scoreLabel.config(text=f"score: {score}",fg="white",font = ("Helvetica", 15),)
         if hardMode == True:
-            score*=1.1
-        fishScoreChanger()
-        if correctInRow == 5:       #if you got 5 correct, the lowest numbers rise
+            score*=1.05       #woah...big
+        fishScoreChanger()   #if your score is large enough, gives you a bigger fish
+        if correctInRow == 5:       #if you got 5 correct in a row, the game gets harder
             for a in range(1):
                 firstNumA+=1
                 firstNumB+=2
@@ -308,14 +307,7 @@ def checkAnswer():                                                #checks you an
         
 
     elif "skip" in playerAnswer:                             # if you skipped
-        combo = 0               #c-c-c-c-combo breaker
-        correctInRow = 0
-        if skips >= 1:            #and have skips
-            skips-=1                                #remove a skip
-        if skips <= 0:                     #if you are now out
-            skipButton.config(state=DISABLED, text="")
-        if skips == 0:                                            #if you were already out
-            incorrectAnswer()
+        skipClick()
 
     elif playerAnswer != str(correctNum):          #if you are wrong
         combo = 0                       #c-c-c-c-c-combo breaker
@@ -330,22 +322,21 @@ def checkAnswer():                                                #checks you an
 
 def skipClickBOUND(event=None):
     skipClick()
-def skipClick():                             #for if youre feeling frisky & want skip
+def skipClick():                             
     global skips, incorrectAnswers, combo, correctInRow
     combo = 0                            #c-c-c-c-combo breaker
     correctInRow = 0
     if skips >= 1 and incorrectAnswers < 5:             #if yoy have 1 or more skips, and less than 5 wrong answwrs
-        skips-=1
-        if skips == 0:
-            skipButton.config(state=DISABLED, text="")                                           #use a skip
-    elif skips < 1:                          #if you have no skips left
+        skips-=1 
+        if skips == 0:          #if you have no skips left
+            skipButton.config(state=DISABLED, text="")                                     
+    elif skips < 1:                     #  if you alreasdy had no skips left
         incorrectAnswer()
-    questionLoop()                   #repeat loop
 
-def incorrectAnswer():                                                    #on incorrect answer, kills a heart & shows correct answer over score board
+def incorrectAnswer():  #               the command the runs when you get the answer wrong
     global incorrectAnswers, correctNum, firstNum, secondNum, selectedOp, score
     soundIncorrectAnswer()
-    incorrectAnswers+=1
+    incorrectAnswers+=1               
     if incorrectAnswers == 1:
         heart.config(i=heartBrokeArt)
     elif incorrectAnswers == 2:
@@ -358,7 +349,8 @@ def incorrectAnswer():                                                    #on in
         heart5.config(i=heartBrokeArt)
     scoreLabel.config(text= f"{firstNum}{selectedOp}{secondNum}={correctNum}", fg="black", font = ("Helvetica", 15),)
     if hardMode == True:
-        score=0
+        score=score/2
+        score = round(score)
         if incorrectAnswers>=3:
             gameLoss()
     else:
