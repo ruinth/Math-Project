@@ -6,7 +6,7 @@ import scoremanager
 mixer.init()                 #makes msuic be ready
 
 window = Tk()                # (this creates the window) 
-window.title("The Math Game v 0.3.2")                   #title
+window.title("Afishmetic v 0.3.3")                   #title
 window.iconbitmap("mathegameasset\\icon.ico")         #icon (only in top corner. real icon is changed manually rn)
 window.resizable(False, False)                       #no resizing the window
 
@@ -296,16 +296,16 @@ def checkAnswer():    #the commands that runs when we enter our answer
             score*=1.05       #woah...big
         fishScoreChanger()   #if your score is large enough, gives you a bigger fish
         if correctInRow == 5:       #if you got 5 correct in a row, the game gets harder
-            for a in range(1):
-                firstNumA+=1
-                firstNumB+=2
-                secondNumA+=1
-                secondNumB+=2
-                level+=1
-                levelLabel.config(text=f"level: {level}") 
-            correctInRow=0
-        
-
+            if level != 10 or hardMode == True:
+                for a in range(1):
+                    firstNumA+=1
+                    firstNumB+=2
+                    secondNumA+=1
+                    secondNumB+=2
+                    level+=1
+                    levelLabel.config(text=f"level: {level}") 
+                correctInRow=0
+    
     elif "skip" in playerAnswer:                             # if you skipped
         skipClick()
 
@@ -313,6 +313,7 @@ def checkAnswer():    #the commands that runs when we enter our answer
         combo = 0                       #c-c-c-c-c-combo breaker
         correctInRow = 0             
         incorrectAnswer()
+
     if hardMode == False:
         if incorrectAnswers < 5:                                      #if you are at less than 5 inc answers
             questionLoop()                  #CONTINUE QUESTION / ANSWER LOOP
@@ -349,14 +350,13 @@ def incorrectAnswer():  #               the command the runs when you get the an
         heart5.config(i=heartBrokeArt)
     scoreLabel.config(text= f"{firstNum}{selectedOp}{secondNum}={correctNum}", fg="black", font = ("Helvetica", 15),)
     if hardMode == True:
-        score=score/2
+        score/=2
         score = round(score)
         if incorrectAnswers>=3:
             gameLoss()
     else:
         if incorrectAnswers>=5:
             gameLoss()
-
 
 def fishScoreChanger():
     global score
@@ -524,7 +524,6 @@ backgroundLabl = Label(window, i=windowBgArt)   #this makes a big label to be th
 backgroundLabl.place(x=-5,y=-5)              #places label so its a little out
 window.geometry("800x600")                     #WINDOW size 
 window.grid()
-
  #                                            below are entry boxes, labels*, then buttons. tried my best                       *most labels
 
 nameInputBox = Entry(window,                         #input box for name                 (entry)
