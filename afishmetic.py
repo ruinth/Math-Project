@@ -2,15 +2,29 @@ from tkinter import *
 from random import randint as ranNum
 from pygame import mixer       #for music
 import scoremanager
+from os import path
+from sys import platform as _PLATFORM
+
+ASSET_DIR = path.join(path.dirname(path.abspath(__file__)), "mathegameasset")
 
 mixer.init()                 #makes msuic be ready
 
 window = Tk()                # (this creates the window) 
-window.title("Afishmetic v 0.3.3")                   #title
-window.iconbitmap("mathegameasset\\icon.ico")         #icon (only in top corner. real icon is changed manually rn)
+window.title("Afishmetic v 0.3.5 (Linux Test)")                   #title
+window.option_add("*Button.activeBackground", "#255ab7")
+window.option_add("*Button.highlightThickness", 0)
+
+
+
+if _PLATFORM == "win32":
+    window.iconbitmap(path.join(ASSET_DIR, "icon.ico"))         #icon (only in top corner. real icon is changed manually rn)
+elif _PLATFORM == "linux" or _PLATFORM == "darwin":  #linux and mac have no icon
+    window.iconphoto(True, PhotoImage(file=path.join(ASSET_DIR, "sing_clam.png")))  # xd linux has higher quality icon
+    
+
 window.resizable(False, False)                       #no resizing the window
 
-mixer.Channel(1).play(mixer.Sound('mathegameasset\\sounds\\gamesong.wav'), loops=99999)   #starts the theme song. plays it 100 times
+mixer.Channel(1).play(mixer.Sound(path.join(ASSET_DIR, "sounds", "gamesong.wav")), loops=99999)   #starts the theme song. plays it 100 times
 
 playerName =""     #this will become your chosen mame #TRANSRIJTS
 playerAnswer = -99        #wthis will become your chosen ansewer
@@ -484,44 +498,53 @@ def playAgain():             #RESETS ALL VARIABLES AND REMOVES ALL PLACED BUTTON
     startButton.place(x=334,y=220)
 
 def soundIncorrectAnswer():
-    mixer.music.load("mathegameasset\\sounds\\incorrect.wav")
+    mixer.music.load(path.join(ASSET_DIR, "sounds", "incorrect.wav"))
     mixer.music.set_volume(0.1)
     mixer.music.play(loops=0)
 def soundCorrectAnswer():
-    mixer.music.load("mathegameasset\\sounds\\correct.wav")
+    mixer.music.load(path.join(ASSET_DIR, "sounds", "correct.wav"))
     mixer.music.set_volume(0.1)
     mixer.music.play(loops=0)
 # THIS WILL BE THE ART THAT IS USED THIS BLOCK RIGHT HERE AND NOWHERE ELES
-operatorButtonArt = PhotoImage(file="mathegameasset\\MUSHBUTTON001.png").subsample(20,20)
-windowBgArt= PhotoImage(file="mathegameasset\\BACKGROUNWATER001.png")
-logLabelArt = PhotoImage(file="mathegameasset\\LOGBUTTON001.png").subsample(2,2)
-submitButtonArt = PhotoImage(file="mathegameasset\\lilypadbutton001.png").subsample(4,4)
-startButtonArt= PhotoImage(file="mathegameasset\\butterflySTARTBUTTON001.png").subsample(3,4) 
-nameTagArt = PhotoImage(file="mathegameasset\\fishLabel.png").subsample(2,2) 
-chooseOpsArt = PhotoImage(file="mathegameasset\\fishLabel2.png").subsample(2,2) 
-readyLabelArt = PhotoImage(file="mathegameasset\\duckbuttonart.png").subsample(2,2) 
-readyButtonArt = PhotoImage(file="mathegameasset\\fish3.png").subsample(2,2) 
-submitAnswerArt = PhotoImage(file="mathegameasset\\fishLabel.png").subsample(2,2) 
-heartArt = PhotoImage(file="mathegameasset\\HEARTS.png")
-heartBrokeArt = PhotoImage(file="mathegameasset\\HEARTBROKEN.png")
-levelLabelArt = PhotoImage(file="mathegameasset\\levelART.png")
-playAgainArt = PhotoImage(file="mathegameasset\\birdplayagin.png")
-highScoreArt = PhotoImage(file="mathegameasset\\highscore.png").subsample(2,2)
-firstPlaceArt = PhotoImage(file="mathegameasset\\goldFISH.png").subsample(3,3)
-secondPlaceArt = PhotoImage(file="mathegameasset\\SILVfish.png").subsample(3,3)
-thirdPlaceArt = PhotoImage(file="mathegameasset\\bronzFish.png").subsample(3,3)
-muteButtonArt = PhotoImage(file="mathegameasset\\muteClam.png").subsample(2,2)
-singingArt = PhotoImage(file="mathegameasset\\singClam.png").subsample(2,2)
-scoreFish1 = PhotoImage(file="mathegameasset\\scorefish1.png")
-scoreFish2= PhotoImage(file="mathegameasset\\scorefish2.png")
-scoreFish3= PhotoImage(file="mathegameasset\\scorefish3.png")
-scoreFish4= PhotoImage(file="mathegameasset\\scorefish4.png")
-scoreFish5= PhotoImage(file="mathegameasset\\scorefish5.png")
-scoreFish6= PhotoImage(file="mathegameasset\\scorefish6.png")
-creditArt = PhotoImage(file="mathegameasset\\creditART.png")
+operatorButtonArt = PhotoImage(file=path.join(ASSET_DIR, "button_mushroom_001.png")).subsample(20,20)
+windowBgSource = PhotoImage(file=path.join(ASSET_DIR, "background_water_001.png"))
+windowBgArt = PhotoImage(width=800, height=600)
+windowBgArt.tk.call(
+    str(windowBgArt),
+    "copy",
+    str(windowBgSource),
+    "-from", 10, 10, 810, 610,
+    "-to", 0, 0,
+)
+logLabelArt = PhotoImage(file=path.join(ASSET_DIR, "button_log_001.png")).subsample(2,2)
+submitButtonArt = PhotoImage(file=path.join(ASSET_DIR, "button_lilypad_001.png")).subsample(4,4)
+startButtonArt= PhotoImage(file=path.join(ASSET_DIR, "butterfly_start_button_001.png")).subsample(3,4)
+nameTagArt = PhotoImage(file=path.join(ASSET_DIR, "fish_label.png")).subsample(2,2)
+chooseOpsArt = PhotoImage(file=path.join(ASSET_DIR, "fish_label_002.png")).subsample(2,2)
+readyLabelArt = PhotoImage(file=path.join(ASSET_DIR, "duck_button_art.png")).subsample(2,2)
+readyButtonArt = PhotoImage(file=path.join(ASSET_DIR, "fish_003.png")).subsample(2,2)
+submitAnswerArt = PhotoImage(file=path.join(ASSET_DIR, "fish_label.png")).subsample(2,2)
+heartArt = PhotoImage(file=path.join(ASSET_DIR, "heart.png"))
+heartBrokeArt = PhotoImage(file=path.join(ASSET_DIR, "heartbroken.png"))
+levelLabelArt = PhotoImage(file=path.join(ASSET_DIR, "level_art.png"))
+playAgainArt = PhotoImage(file=path.join(ASSET_DIR, "bird_play_again.png"))
+highScoreArt = PhotoImage(file=path.join(ASSET_DIR, "highscore.png")).subsample(2,2)
+firstPlaceArt = PhotoImage(file=path.join(ASSET_DIR, "fish_gold.png")).subsample(3,3)
+secondPlaceArt = PhotoImage(file=path.join(ASSET_DIR, "fish_silv.png")).subsample(3,3)
+thirdPlaceArt = PhotoImage(file=path.join(ASSET_DIR, "fish_bronze.png")).subsample(3,3)
+muteButtonArt = PhotoImage(file=path.join(ASSET_DIR, "mute_clam.png")).subsample(2,2)
+singingArt = PhotoImage(file=path.join(ASSET_DIR, "sing_clam.png")).subsample(2,2)
+scoreFish1 = PhotoImage(file=path.join(ASSET_DIR, "scorefish_001.png"))
+scoreFish2= PhotoImage(file=path.join(ASSET_DIR, "scorefish_002.png"))
+scoreFish3= PhotoImage(file=path.join(ASSET_DIR, "scorefish_003.png"))
+scoreFish4= PhotoImage(file=path.join(ASSET_DIR, "scorefish_004.png"))
+scoreFish5= PhotoImage(file=path.join(ASSET_DIR, "scorefish_005.png"))
+scoreFish6= PhotoImage(file=path.join(ASSET_DIR, "scorefish_006.png"))
+creditArt = PhotoImage(file=path.join(ASSET_DIR, "credit_art.png"))
 
-backgroundLabl = Label(window, i=windowBgArt)   #this makes a big label to be the background, and give that label the background art
-backgroundLabl.place(x=-5,y=-5)              #places label so its a little out
+backgroundLabl = Label(window, image=windowBgArt, border=0, highlightthickness=0) 
+backgroundLabl.place(x=0, y=0)
+backgroundLabl.lower()
 window.geometry("800x600")                     #WINDOW size 
 window.grid()
  #                                            below are entry boxes, labels*, then buttons. tried my best                       *most labels

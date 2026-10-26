@@ -7,3 +7,6 @@ __pycache__/
 .vscode/
 .idea/
 highscores.json
+afishmetic_debug.py
+afishmetic_debug.log
+# debug script for helping w/ win-linux fixes
