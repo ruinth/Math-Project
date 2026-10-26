@@ -1,7 +1,8 @@
 from json import dump, load, JSONDecodeError
+from os import path
 
 class ScoreManager:
-    def __init__(self, filepath="./highscores.json"):
+    def __init__(self, filepath=path.join(path.dirname(path.abspath(__file__)), "highscores.json")):
         self.filepath = filepath
         self.autosave = True
         self.high_scores = self.getHighScores()
